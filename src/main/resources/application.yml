@@ -1,0 +1,87 @@
+#============================ Single Eureka Server ============================
+
+server:
+  port: ${peer1.server.port}
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  server:
+#    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 8000
+    registry-sync-retries: 0
+    a-s-g-cache-expiry-timeout-ms: 15000
+    peer-eureka-nodes-update-interval-ms: 8000
+    peer-eureka-status-refresh-time-interval-ms: 8000
+    renewal-percent-threshold: 0.01
+    renewal-threshold-update-interval-ms: 8000
+    response-cache-update-interval-ms: 8000
+    response-cache-auto-expiration-in-seconds: 10
+  instance:
+    prefer-ip-address: true
+  environment: ${server.environment.profile}
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${peer1.server.port}/eureka/
+security:
+  basic:
+    enabled: true
+  user:
+    name: ${registry-config.user.name}
+    password: ${registry-config.user.password}
+
+
+
+#============================ Two Eureka Server ============================
+
+#spring:
+#  application:
+#    name: eureka-server
+#
+#eureka:
+#  server:
+##    enable-self-preservation: false
+#    eviction-interval-timer-in-ms: 8000
+#    registry-sync-retries: 0
+#    a-s-g-cache-expiry-timeout-ms: 15000
+#    peer-eureka-nodes-update-interval-ms: 8000
+#    peer-eureka-status-refresh-time-interval-ms: 8000
+#    renewal-percent-threshold: 0.01
+#    renewal-threshold-update-interval-ms: 8000
+#    response-cache-update-interval-ms: 8000
+#    response-cache-auto-expiration-in-seconds: 10
+#  instance:
+#    prefer-ip-address: true
+#  environment: ${server.environment.profile}
+#security:
+#  basic:
+#    enabled: true
+#  user:
+#    name: ${registry-config.user.name}
+#    password: ${registry-config.user.password}
+#---
+#server:
+#  port: ${peer1.server.port}
+#spring:
+#  profiles: ${peer1.server.name}
+#eureka:
+##  instance:
+##    hostname: ${peer1.server.name}
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${registry-config.user.name}:${registry-config.user.password}@${peer2.ip.address}:${peer2.server.port}/eureka/
+#---
+#server:
+#  port: ${peer2.server.port}
+#spring:
+#  profiles: ${peer2.server.name}
+#eureka:
+##  instance:
+##    hostname: ${peer2.server.name}
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${registry-config.user.name}:${registry-config.user.password}@${peer1.ip.address}:${peer1.server.port}/eureka/
